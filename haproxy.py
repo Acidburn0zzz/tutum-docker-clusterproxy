@@ -22,6 +22,7 @@ SESSION_COOKIE = os.getenv("SESSION_COOKIE")
 OPTION = os.getenv("OPTION", "redispatch, httplog, dontlognull, forwardfor").split(",")
 TIMEOUT = os.getenv("TIMEOUT", "connect 5000, client 50000, server 50000").split(",")
 VIRTUAL_HOST = os.getenv("VIRTUAL_HOST", None)
+BACKEND_ADDITIONS = os.getenv("BACKEND_ADDITIONS", None)
 
 TUTUM_AUTH = os.getenv("TUTUM_AUTH")
 DEBUG = os.getenv("DEBUG", False)
@@ -143,6 +144,8 @@ def update_cfg(cfg, backend_routes, vhost):
                             break
                     if not duplicated:
                         backend.append(server_string)
+            if BACKEND_ADDITIONS:
+                backend.append(BACKEND_ADDITIONS)
             if backend:
                 cfg["backend %s_cluster" % service_name] = sorted(backend)
 
@@ -165,7 +168,8 @@ def update_cfg(cfg, backend_routes, vhost):
                     break
             if not duplicated:
                 backend.append(server_string)
-
+        if BACKEND_ADDITIONS:
+            backend.append(BACKEND_ADDITIONS)
         cfg["backend default_service"] = sorted(backend)
 
     logger.debug("New cfg: %s", cfg)
