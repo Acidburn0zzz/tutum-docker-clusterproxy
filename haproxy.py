@@ -142,8 +142,6 @@ def update_cfg(cfg, backend_routes, vhost):
                         if "%s:%s" % (addr_port["addr"], addr_port["port"]) in server_str:
                             duplicated = True
                             break
-                    if not duplicated:
-                        backend.append(server_string)
             if BACKEND_ADDITIONS:
                 backend.append(BACKEND_ADDITIONS)
             if backend:
@@ -166,8 +164,6 @@ def update_cfg(cfg, backend_routes, vhost):
                 if "%s:%s" % (addr_port["addr"], addr_port["port"]) in server_str:
                     duplicated = True
                     break
-            if not duplicated:
-                backend.append(server_string)
         if BACKEND_ADDITIONS:
             backend.append(BACKEND_ADDITIONS)
         cfg["backend default_service"] = sorted(backend)
